@@ -8,6 +8,7 @@ import {
 } from './components/ng-redux';
 import { DevToolsExtension } from './components/dev-tools';
 import { select, select$ } from './decorators/select';
+import { dispatch } from './decorators/dispatch';
 import { NgReduxModule } from './ng-redux.module';
 import { BaseReduxAction } from './components/base-redux-action';
 import { ReduxAction } from './decorators/redux-action.decorator';
@@ -29,4 +30,5 @@ export {
   select$,
   BaseReduxAction,
   ReduxAction
+  dispatch,
 };
