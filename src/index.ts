@@ -9,6 +9,8 @@ import {
 import { DevToolsExtension } from './components/dev-tools';
 import { select, select$ } from './decorators/select';
 import { NgReduxModule } from './ng-redux.module';
+import { BaseReduxAction } from './components/base-redux-action';
+import { ReduxAction } from './decorators/redux-action.decorator';
 
 // Warning: don't do this:
 //  export * from './foo'
@@ -25,4 +27,6 @@ export {
   DevToolsExtension,
   select,
   select$,
+  BaseReduxAction,
+  ReduxAction
 };
