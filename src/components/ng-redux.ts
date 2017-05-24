@@ -215,10 +215,10 @@ export class NgRedux<RootState> {
         // @@redux/INIT is a default starting action for Redux which is string based and needs to be ignored
         // since it will not be conformant to the IReduxAction structure.  If anything else if found,
         // we should throw an error.
-        if (!((action.type == "@@redux/INIT") ||
-              (action.type == "@@INIT"))) {
-          throw new Error("Unexpected action type: " + action.type);
-        }
+        // if (!((action.type == "@@redux/INIT") ||
+        //       (action.type == "@@INIT"))) {
+        //   throw new Error("Unexpected action type: " + action.type);
+        // }
       }
 
       return currentState;

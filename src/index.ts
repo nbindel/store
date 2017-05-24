@@ -29,6 +29,6 @@ export {
   select,
   select$,
   BaseReduxAction,
-  ReduxAction
+  ReduxAction,
   dispatch,
 };
