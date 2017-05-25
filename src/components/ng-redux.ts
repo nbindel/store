@@ -20,24 +20,16 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/switchMap';
 import { Selector, resolveToFunctionSelector } from './selectors';
 import { assert } from '../utils/assert';
-import { ReduxActionRestorer } from './redux-action-restorer';
-import { IReduxAction } from './IReduxAction';
-import { IReduxActionRestorer } from './IReduxActionRestorer';
 
 export type Comparator = (x: any, y: any) => boolean;
-
-export interface IStoreConfig {
-
-}
 
 export class NgRedux<RootState> {
   /** @hidden */
   static instance: NgRedux<any> = undefined;
 
-  private static reduxActionRestorer: ReduxActionRestorer<any> = undefined;
   private _store: Store<RootState> = null;
   private _store$: BehaviorSubject<RootState> = null;
-  
+
   /** @hidden */
   constructor(private ngZone: NgZone) {
     NgRedux.instance = this;
@@ -149,43 +141,10 @@ export class NgRedux<RootState> {
     return this.ngZone.run(() => this._store.dispatch(action));
   };
 
-  static getReduxActionRestorer<RootState>() : IReduxActionRestorer<RootState> {
-    if(NgRedux.reduxActionRestorer === undefined) {
-      NgRedux.reduxActionRestorer = new ReduxActionRestorer<RootState>();
-    }
-
-    return NgRedux.reduxActionRestorer;
-  }
-
   private setStore(store: Store<RootState>) {
     this._store = store;
     this._store$.next(store as any);
   }
-
-  public static actionRestorerReducer<RootState>(state: RootState, action: any) : RootState {
-      let currentState: RootState = state;
-
-      if (typeof (action.payload) === 'object') {
-        let reduxAction: IReduxAction<RootState> = <IReduxAction<RootState>>action.payload;
-
-        if (typeof reduxAction.execute === 'undefined') {
-          reduxAction = NgRedux.reduxActionRestorer.restoreAction(reduxAction);
-        }
-
-        currentState = reduxAction.execute(state);
-      }
-      else {
-        // @@redux/INIT is a default starting action for Redux which is string based and needs to be ignored
-        // since it will not be conformant to the IReduxAction structure.  If anything else if found,
-        // we should throw an error.
-        // if (!((action.type == "@@redux/INIT") ||
-        //       (action.type == "@@INIT"))) {
-        //   throw new Error("Unexpected action type: " + action.type);
-        // }
-      }
-
-      return currentState;
-    }
 
   private storeToObservable = (store: Store<RootState>): Observable<RootState> =>
     new Observable<RootState>(observer => {
